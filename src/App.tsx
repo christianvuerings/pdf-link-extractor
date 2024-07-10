@@ -12,7 +12,7 @@ type Title = {
 };
 
 export default function PDFLinkExtractor() {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const [links, setLinks] = useState<
     {
       url: string;
@@ -25,17 +25,13 @@ export default function PDFLinkExtractor() {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log({ file });
-
-  // async function updateNumPages(selectedFile) {
-  //   const document = pdfjsLib.getDocument({ data: selectedFile }).promise;
-  //   console.log({ document });
-  // }
-
-  const handleFileChange = async (event) => {
-    const selectedFile = event.target.files[0];
-    setFile(selectedFile);
-    // updateNumPages(event.target.result);
+  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event,
+  ) => {
+    const selectedFile = event?.target?.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
   };
 
   async function fetchTitle(url: string): Promise<Title> {
@@ -91,7 +87,7 @@ export default function PDFLinkExtractor() {
           return;
         }
         const pdf = await pdfjsLib.getDocument({
-          data: e.target.result,
+          data: e.target.result as ArrayBuffer,
         }).promise;
         let extractedLinks = [];
 
