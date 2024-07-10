@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 
-// import * as pdfjsLib from 'pdfjs-dist';
+import * as pdfjsLib from 'pdfjs-dist';
 // pdfjsLib.GlobalWorkerOptions.workerSrc =
 //   '../../node_modules/pdfjs-dist/build/pdf.worker.mjs';
 
-const pdfjs = await import('pdfjs-dist');
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.mjs',
   import.meta.url,
 ).toString();
@@ -92,7 +91,7 @@ export default function PDFLinkExtractor() {
         if (!e.target) {
           return;
         }
-        const pdf = await pdfjs.getDocument({
+        const pdf = await pdfjsLib.getDocument({
           data: e.target.result as ArrayBuffer,
         }).promise;
         let extractedLinks = [];
